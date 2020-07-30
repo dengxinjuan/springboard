@@ -1,0 +1,14 @@
+body{
+    background-color: rgb(184, 163, 204);
+    box-sizing: border-box;
+    font-size: 24px;
+}
+
+h1{
+    position:center;
+    padding: 30px 40px;
+    color: white;
+    text-align: center;
+
+}
+
