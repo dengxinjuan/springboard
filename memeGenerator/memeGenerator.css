@@ -1,11 +1,22 @@
 h1{
-    color:purple;
+    color:blueviolet;
    text-align: center;
+   margin: auto;
+   width: 100%;  
+   bottom: 0;    
+   font-size: 3em;}
+
+body {
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    min-width: 1120px;
+    background-color: lightsteelblue;
 }
 
 form{
    text-align: center;
    background-color: gainsboro;
+   margin-bottom: 2em; 
 }
 
 input{
@@ -14,11 +25,28 @@ input{
 }
 
 .top{
+    color: white;
     position: absolute;
-    top: 4px;
+    margin: auto;
+    width: 100%;
+    top: 0;      
+    font-size: 3em;
+    text-shadow: 0 0 5px black;
+    text-align: center;
 }
 
 .buttom{
+    color: white;
     position: absolute;
-    bottom: 4px;
+    margin: auto;
+    width: 100%;  
+    bottom: 0;    
+    font-size: 3em;
+    text-shadow: 0 0 5px black;
+    text-align: center;
 }
+#submit{
+    background-color: rgb(129, 43, 209);
+    font-size: large;
+}
+
