@@ -6,11 +6,16 @@ h1{
    bottom: 0;    
    font-size: 3em;}
 
+   div{
+       display: inline-block;
+   }
+
 body {
     box-sizing: border-box;
     font-family: 'Rubik', sans-serif;
     min-width: 1120px;
     background-color: lightsteelblue;
+  
 }
 
 form{
