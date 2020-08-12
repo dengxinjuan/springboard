@@ -1,0 +1,72 @@
+/* game board table */
+body{
+  background: url(http://www.graphicartsunit.com/images/noise2.png);
+  width: 100%;
+  height: 100;
+  text-align: center;
+}
+
+h1{
+  font-size: 36px;
+  color:slateblue;
+}
+#description{
+  margin-left: 20%;
+  display: inline;
+}
+
+
+#game{
+  text-align: center;
+  position: relative;
+  margin: auto;
+  display: inline-block;
+}
+
+#board td {
+  width: 90px;
+  height: 90px;
+  border: solid 2px #666;
+  margin-left: auto;
+}
+
+/* pieces are div within game table cells: draw as colored circles */
+
+.piece {
+  /* TODO: make into circles */
+  margin: 5px;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  box-shadow: 3px 3px #888888;
+
+}
+
+/* TODO: make pieces red/blue,  depending on player 1/2 piece */
+
+.player1{
+  background: radial-gradient(circle at 100px 100px,red,rgb(83, 83, 83));
+}
+
+.player2{
+  background: radial-gradient(circle at 100px 100px, blue,rgb(83,83,83));
+}
+
+/* column-top is table row of clickable areas for each column */
+
+#column-top td {
+  border: dashed 4px lightgray;
+}
+
+#column-top td:hover {
+  background-color:slateblue;
+  opacity: 0.5;
+}
+
+button#restart{
+  border-radius: 4px;
+  font-size: larger;
+  background-color: slateblue;
+  height:50%;
+
+}
