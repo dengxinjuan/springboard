@@ -1,4 +1,5 @@
 let movieArr=[];
+let currentId = 0;
 
 function appendMovie(movieData){
     return `<tr>
@@ -15,6 +16,9 @@ $('#movieForm').on("submit",function(e){
     e.preventDefault();
     let movieTitle = $('#title').val();
     let movieRating = $('#rating').val();
+    let movieData ={movieTitle,movieRating,currentId};
+    movieArr.push(movieData);
+    currentId++;
     
     let reg =/\w\w+/;
      if(!movieTitle){
@@ -22,9 +26,7 @@ $('#movieForm').on("submit",function(e){
      } else if(!reg.test(movieTitle)){
          alert("you must enter at least two characters!")
      }else{
-    let movieData ={movieTitle,movieRating};
     const movieHtml = appendMovie(movieData);
-    movieArr.push(movieData);
     
     $('#tbody').append(movieHtml);
     $('#movieForm').trigger("reset");}
@@ -32,8 +34,46 @@ $('#movieForm').on("submit",function(e){
 
 
 $("tbody").on("click", ".btn.btn-danger", function(e) {
+    let indexToRemoveAt = movieArr.findIndex(movie => movie.currentId === +$(e.target).data("deleteId"))
+    movieArr.splice(indexToRemoveAt, 1);
+
     $(e.target)
       .closest("tr")
       .remove();
   });
 
+
+function sortRating(arr){
+    return arr.sort(function(a,b){
+        if(a.movieRating > b.movieRating){ return -1;}
+         if(a.movieRating < b.movieRating){return 1;}
+        return 0;})
+};
+
+
+function  sortTitle(arr){
+    return arr.sort(function(a,b){
+        if(a.movieTitle > b.movieTitle){return 1;}
+        if(a.movieTitle > b.movieTitle){return -1;}
+        return 0;
+    })
+};
+
+
+$("#ratingdrop").on("click",function(){
+    let sortedRating = sortRating(movieArr);
+    $("#tbody").empty();
+    for (let movie of sortedRating) {
+        const HTMLtoAppend = appendMovie(movie);
+        $("#tbody").append(HTMLtoAppend);
+      }
+});
+
+$("#titledrop").on("click",function(){
+    let sortedtitle = sortTitle(movieArr);
+    $("#tbody").empty();
+    for (let movie of sortedtitle) {
+        const HTMLtoAppend = appendMovie(movie);
+        $("#tbody").append(HTMLtoAppend);
+      }
+})
