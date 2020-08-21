@@ -17,8 +17,7 @@ $('#movieForm').on("submit",function(e){
     let movieTitle = $('#title').val();
     let movieRating = $('#rating').val();
     let movieData ={movieTitle,movieRating,currentId};
-    movieArr.push(movieData);
-    currentId++;
+   
     
     let reg =/\w\w+/;
      if(!movieTitle){
@@ -27,6 +26,8 @@ $('#movieForm').on("submit",function(e){
          alert("you must enter at least two characters!")
      }else{
     const movieHtml = appendMovie(movieData);
+    movieArr.push(movieData);
+    currentId++;
     
     $('#tbody').append(movieHtml);
     $('#movieForm').trigger("reset");}
