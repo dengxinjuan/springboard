@@ -1,0 +1,31 @@
+/* some colors you may find useful:
+  #115ff4
+  #060ce9
+  #28a200
+  #8d2ab5
+  #74119c
+*/
+
+h1{
+  color: #115ff4;
+  text-shadow:  #060ce9 1px 1px;
+  font-weight:bolder;
+}
+
+
+#jeopardy th, #jeopardy td {
+  border: solid 1px white;
+  width: 12em;
+  padding: 1em;
+ 
+}
+
+th {
+  font-weight: bold;
+  height: 4em;
+  text-shadow: #115ff4 1px 1px;
+}
+
+td {
+  height: 9em;
+}
