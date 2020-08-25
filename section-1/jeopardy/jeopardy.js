@@ -1,22 +1,4 @@
-// categories is the main data structure for the app; it looks like this:
 
-//  [
-//    { title: "Math",
-//      clues: [
-//        {question: "2+2", answer: 4, showing: null},
-//        {question: "1+1", answer: 2, showing: null}
-//        ...
-//      ],
-//    },
-//    { title: "Literature",
-//      clues: [
-//        {question: "Hamlet Author", answer: "Shakespeare", showing: null},
-//        {question: "Bell Jar Author", answer: "Plath", showing: null},
-//        ...
-//      ],
-//    },
-//    ...
-//  ]
 
 categories = [];
 
@@ -32,17 +14,6 @@ async function getCategoryIds() {
     return _.sampleSize(idArr,6);
 }
 
-/** Return object with data about a category:
- *
- *  Returns { title: "Math", clues: clue-array }
- *
- * Where clue-array is:
- *   [
- *      {question: "Hamlet Author", answer: "Shakespeare", showing: null},
- *      {question: "Bell Jar Author", answer: "Plath", showing: null},
- *      ...
- *   ]
- */
 
 async function getCategory(catId) {
     const reCategory = await axios.get(`http://jservice.io/api/category?id=${catId}`);
@@ -67,9 +38,10 @@ async function getCategory(catId) {
  */
 
 async function fillTable() {
-    $("#jeopardy thead").empty();
+    clearTable();
+
     let $tr = $("<tr>");
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i <= 5; i++) {
        let $thead=$("<th>");
        $thead.attr("scope","row");
        $thead.text(categories[i].title);
@@ -77,7 +49,7 @@ async function fillTable() {
     }
     $("#jeopardy thead").append($tr);
 
-    $("#jeopardy tbody").empty();
+    
     for (let clueIdx = 0; clueIdx <5; clueIdx++) {
       let $tr = $("<tr>");
       $tr.attr("scope","row");
@@ -122,18 +94,33 @@ function handleClick(e) {
  * and update the button used to fetch data.
  */
 
-function showLoadingView() {
-    $("#jeopardy").empty();
-    let spinner = '<img src="https://miro.medium.com/max/1080/0*DqHGYPBA-ANwsma2.gif" style="width:100%">';
-     $("#jeopardy").html(spinner);
-     $("#restart").text("loading");
+function clearTable(){
+    $("#jeopardy thead").empty();
+    $("#jeopardy tbody").empty();
 }
+
+
+function showLoadingView() {
+    clearTable();
+    let spinner = '<img src="https://miro.medium.com/max/1080/0*DqHGYPBA-ANwsma2.gif" style="width:100%">';
+    let loading =`<h1 class="h1 text-center">Jeopardy</h1>
+    <br><div class="d-flex justify-content-center"><button class="btn-lg bg-warning text-center">loading</button></div>`;
+    let $modal = $("#myModal");
+    
+    $("#spinner").append(loading,spinner);
+    
+    $modal.attr("style","display:block");
+}
+
+
 
 /** Remove the loading spinner and update the button used to fetch data. */
 
 function hideLoadingView() {
-    $("#jeopardy").empty();
-    $("#restart").text("restart");
+    clearTable();
+    let $modal = $("#myModal");
+    $modal.attr("style","display:none");
+  
 }
   
 
@@ -151,6 +138,7 @@ async function setupAndStart() {
     for(id of sixId){
         categories.push(await getCategory(id))
     };
+    hideLoadingView();
     fillTable();
 }
 
@@ -158,7 +146,9 @@ async function setupAndStart() {
 /** On click of start / restart button, set up game. */
 
 $("#restart").on("click",function(){
-    setupAndStart();
+     showLoadingView();
+     setupAndStart();
+     $("#restart").text("restart");
    });
 
 
