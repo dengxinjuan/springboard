@@ -9,6 +9,35 @@ $(async function() {
   const $navLogin = $("#nav-login");
   const $navLogOut = $("#nav-logout");
 
+  const $loggedin = $("#loggedin");
+
+  const $userProfile=$("#user-profile");
+  const navProfile=$("#nav-user-profile");
+
+  //showProfile ny click user-profile
+  navProfile.on("click", showProfile);
+
+  function showProfile(){
+    hideElements();
+    $userProfile.show();
+  }
+
+
+
+  
+
+  const $navSubmit =$("#nav-submit");
+
+  $navSubmit.on("click",function(){
+       hideElements();
+      $allStoriesList.show();
+      $submitForm.slideToggle();
+  })
+
+
+
+
+
   // global storyList variable
   let storyList = null;
 
@@ -16,6 +45,8 @@ $(async function() {
   let currentUser = null;
 
   await checkIfLoggedIn();
+  $userProfile.hide();
+
 
   /**
    * Event listener for logging in.
@@ -77,6 +108,7 @@ $(async function() {
     $loginForm.slideToggle();
     $createAccountForm.slideToggle();
     $allStoriesList.toggle();
+    
   });
 
   /**
@@ -189,6 +221,7 @@ $(async function() {
   function showNavForLoggedInUser() {
     $navLogin.hide();
     $navLogOut.show();
+    $loggedin.show();
   }
 
   /* simple function to pull the hostname from a URL */
@@ -215,3 +248,4 @@ $(async function() {
     }
   }
 });
+
