@@ -9,14 +9,14 @@ categories = [];
  */
 
 async function getCategoryIds() {
-    const categories = await axios.get("http://jservice.io/api/categories",{params:{count:100}});
+    const categories = await axios.get("https://jservice.io/api/categories",{params:{count:100}});
     let idArr = categories.data.map(obj=>obj.id);
     return _.sampleSize(idArr,6);
 }
 
 
 async function getCategory(catId) {
-    const reCategory = await axios.get(`http://jservice.io/api/category?id=${catId}`);
+    const reCategory = await axios.get(`https://jservice.io/api/category?id=${catId}`);
     let clues = reCategory.data.clues;
     let clueArr = clues.map(clue => ({question:clue.question,answer:clue.answer,showing:null}));
     return {
