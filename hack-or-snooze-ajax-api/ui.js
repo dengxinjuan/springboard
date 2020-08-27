@@ -192,23 +192,34 @@ let currentUser = null;
    * A function to render HTML for an individual Story instance
    */
 
-  function generateStoryHTML(story) {
+  function generateStoryHTML(story,isOwnStory) {
     let hostName = getHostName(story.url);
+    let starType = isFavorite(story)? "fas":"far";
+
+    const trashCanIcon = isOwnStory? `<span class="trash-can">
+    <i class="fas fa-trash-alt"></i></span>`: "";
 
     // render story markup
     const storyMarkup = $(`
-      <li id="${story.storyId}">
-        <a class="article-link" href="${story.url}" target="a_blank">
-          <strong>${story.title}</strong>
+    <li id="${story.storyId}">
+      ${trashCanIcon}
+      <span class="star">
+        <i class="${starType} fa-star"></i>
+      </span>
+      <a class="article-link" href="${story.url}" target="a_blank">
+        <strong>${story.title}</strong>
         </a>
-        <small class="article-author">by ${story.author}</small>
-        <small class="article-hostname ${hostName}">(${hostName})</small>
-        <small class="article-username">posted by ${story.username}</small>
-      </li>
-    `);
+      <small class="article-author">by ${story.author}</small>
+      <small class="article-hostname ${hostName}">(${hostName})</small>
+      <small class="article-username">posted by ${story.username}</small>
+    </li>
+  `);
 
     return storyMarkup;
   }
+
+
+
 
 
 
@@ -222,7 +233,9 @@ let currentUser = null;
       $filteredArticles,
       $ownStories,
       $loginForm,
-      $createAccountForm
+      $createAccountForm,
+      $favoritedStories,
+      $userProfile
     ];
     elementsArr.forEach($elem => $elem.hide());
   }
@@ -292,12 +305,14 @@ let currentUser = null;
 
 
 
-//submit button
+//submit button, show submit form. and submiy story
 
 const $navSubmit =$("#nav-submit");
 
 function sub(){
+  hideElements();
   $submitForm.show();
+  $allStoriesList.show();
 }
 
 $navSubmit.on("click",sub);
@@ -338,15 +353,89 @@ $submitForm.on("submit", async function(e){
 
 
 
+//trashCan button event listener
+
+$trashCan = $(".trash-can");
+
+$ownStories.on("click", $trashCan, async function(evt) {
+  // get the Story's ID
+  const $closestLi = $(evt.target).closest("li");
+  const storyId = $closestLi.attr("id");
+
+  // remove the story from the API
+  await storyList.removeStory(currentUser, storyId);
+
+  // re-generate the story list
+  await generateStories();
+
+  // hide everyhing
+  hideElements();
+
+  // ...except the story list
+  $allStoriesList.show();
+});
 
 
 
+//favorite button
+
+$favoritedStories = $("#favorited-articles");
+
+function isFavorite(story) {
+  let favStoryIds = new Set();
+  if (currentUser) {
+    favStoryIds = new Set(currentUser.favorites.map(obj => obj.storyId));
+  }
+  return favStoryIds.has(story.storyId);
+}
 
 
 
+$("#nav-favorites").on("click",function(){
+    hideElements();
+    generateFaves();
+    $favoritedStories.show();
+});
 
 
+$(".articles-container").on("click", ".star", async function(evt) {
+    if (currentUser) {
+      const $tgt = $(evt.target);
+      const $closestLi = $tgt.closest("li");
+      const storyId = $closestLi.attr("id");
 
+      // if the item is already favorited
+      if ($tgt.hasClass("fas")) {
+        // remove the favorite from the user's list
+        await currentUser.removeFavorite(storyId);
+        // then change the class to be an empty star
+        $tgt.closest("i").toggleClass("fas far");
+      } else {
+        // the item is un-favorited
+        await currentUser.addFavorite(storyId);
+        $tgt.closest("i").toggleClass("fas far");
+      }
+    }
+  });
+
+ 
+
+
+  function generateFaves() {
+
+    $favoritedStories.empty();
+
+    if (currentUser.favorites.length === 0) {
+      $favoritedStories.append("<h5>No favorites added!</h5>");
+    } else {
+      for (let story of currentUser.favorites) {
+        let favoriteHTML = generateStoryHTML(story, false, true);
+        $favoritedStories.append(favoriteHTML);
+      }
+    }
+
+
+  }
 
 
 

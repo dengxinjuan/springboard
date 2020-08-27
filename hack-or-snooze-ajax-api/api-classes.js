@@ -201,28 +201,30 @@ async deteleUser(){
 }
 
 //add favorite
-async addFavorite(story) {
-  this.favorites.push(story);
-  const token=this.loginToken;
-  await axios.post(`${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,{
-    "token":token
-  })
+async addFavorite(storyId) {
+
+  await axios({
+    url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+    method: "POST",
+    data: {
+      token: this.loginToken
+    },
+  });
+
+  await this.retrieveDetails();
+    return this;
 }
 //removes favorite from user favorite list
-async removeFavorite(story) {
-
-  this.favorites = this.favorites.filter(s => s.storyId !== story.storyId);
+async removeFavorite(storyId) {
   await axios({
-    url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
+    url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
     method: "DELETE",
     data: {
       token: this.loginToken
     },
   });
-}
-//to check the story is favorite
-isFavorite(story) {
-  return this.favorites.some(s => (s.storyId === story.storyId));
+  await this.retrieveDetails();
+    return this;
 }
 
 }

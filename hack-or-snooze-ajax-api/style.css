@@ -1,10 +1,12 @@
 html {
   font-family: Arimo, sans-serif;
+  font-size: large;
 }
 
 body {
   margin: 8px 7.5vw;
-}
+	background-image : url(background.png);
+	}
 
 h1 {
   font-size: 1.1rem;
@@ -27,7 +29,8 @@ a {
 }
 
 a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+
 }
 
 
@@ -39,10 +42,12 @@ a:hover {
 
 nav {
   display: flex;
-  background-color: #ff6600;
+  background-color: #70C18A;
   align-items: center;
   padding: 5px 20px;
   border-radius: 3px 3px 0 0;
+  height: 38px;
+  box-shadow: 2px 2px 4px -1px black;
 }
 
 .main-nav-links {
@@ -62,7 +67,7 @@ nav {
   display: flex;
   flex-direction: column;
   align-self: center;
-  background-color: #f6f6ef;
+  background-color: whitesmoke;
 }
 
 form {
@@ -159,6 +164,7 @@ form > hr {
 
 .pencil:hover {
   color: darkblue;
+  
 }
 
 .article-link > strong {
@@ -166,14 +172,17 @@ form > hr {
   font-size: 0.85rem;
   font-weight: normal;
   margin: 18px 0;
+
 }
 
 .article-link:hover {
   text-decoration: none;
+
 }
 
 .article-hostname:hover {
   text-decoration: underline;
+
 }
 
 .article-author {
@@ -226,3 +235,5 @@ form > hr {
     margin: 8px auto;
   }
 }
+
+
