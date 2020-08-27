@@ -12,40 +12,46 @@ $(async function() {
   const $loggedin = $("#loggedin");
 
   const $userProfile=$("#user-profile");
-  const navProfile=$("#nav-user-profile");
+  const $navProfile=$("#nav-user-profile");
+
+
+let currentUser = null;
+
+  //global storyList variable
+  let storyList = null;
+
+
+
+ //All functions around user
+
 
   //showProfile ny click user-profile
-  navProfile.on("click", showProfile);
+  $navProfile.on("click", function(){
+    showProfile();
+    updateUserProfile();
+  });
 
   function showProfile(){
     hideElements();
     $userProfile.show();
   }
 
+ function updateUserProfile(){
 
+   $("#profile-name").text(`Name: ${currentUser.name}`);
+  $("#profile-username").text(`UserName: ${currentUser.username}`);
+  $("#profile-account-date").text(
+    `Account Created: ${currentUser.createdAt}`
+  );
 
-  
-
-  const $navSubmit =$("#nav-submit");
-
-  $navSubmit.on("click",function(){
-       hideElements();
-      $allStoriesList.show();
-      $submitForm.slideToggle();
-  })
-
+ }
 
 
 
-
-  // global storyList variable
-  let storyList = null;
-
-  // global currentUser variable
-  let currentUser = null;
 
   await checkIfLoggedIn();
   $userProfile.hide();
+
 
 
   /**
@@ -204,6 +210,9 @@ $(async function() {
     return storyMarkup;
   }
 
+
+
+
   /* hide all elements in elementsArr */
 
   function hideElements() {
@@ -222,6 +231,7 @@ $(async function() {
     $navLogin.hide();
     $navLogOut.show();
     $loggedin.show();
+    $("#nav-user-profile").text(currentUser.name);
   }
 
   /* simple function to pull the hostname from a URL */
@@ -247,5 +257,102 @@ $(async function() {
       localStorage.setItem("username", currentUser.username);
     }
   }
+   
+
+  //click-mystories nav, create stories and show
+  
+  
+  const $body=$("body");
+
+
+   $body.on("click", "#nav-my-stories", function() {
+    hideElements();
+    if (currentUser) {
+      $userProfile.hide();
+      createMystories();
+      $ownStories.show();
+    }
+  });
+
+
+  function createMystories(){
+    $ownStories.empty();
+    if (currentUser.ownStories.length === 0) {
+      $ownStories.append("<h5>There is No story yet</h5>");
+    } else {
+      // for all of the user's posted stories
+      for (let story of currentUser.ownStories) {
+        let ownStoryHTML = generateStoryHTML(story, true);
+        $ownStories.append(ownStoryHTML);
+      }
+    }
+
+    $ownStories.show();
+   }
+
+
+
+//submit button
+
+const $navSubmit =$("#nav-submit");
+
+function sub(){
+  $submitForm.show();
+}
+
+$navSubmit.on("click",sub);
+
+//submit form sub button
+$submitForm.on("submit", async function(e){
+  e.preventDefault();
+  const author = $("#author").val();
+  const title  =$("#title").val();
+  const url = $("#url").val();
+  const hostName = getHostName(url);
+  const username = currentUser.username;
+
+  const storyObj = await storyList.addStory(currentUser, {
+    title,
+    author,
+    url,
+    username
+  });
+
+  const $li = $(`
+    <li id="${storyObj.storyId}" class="id-${storyObj.storyId}">
+      <span class="star">
+        <i class="far fa-star"></i>
+      </span>
+      <a class="article-link" href="${url}" target="a_blank">
+        <strong>${title}</strong>
+      </a>
+      <small class="article-hostname ${hostName}">(${hostName})</small>
+      <small class="article-author">by ${author}</small>
+      <small class="article-username">posted by ${username}</small>
+    </li>
+  `);
+  $allStoriesList.prepend($li);
+
+  $submitForm.trigger("reset");
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
+
+
+
 
