@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  margin: 8px 7.5vw;
+  margin: 8px 8vw;
 	background-image : url(background.png);
 	}
 
@@ -26,11 +26,13 @@ h5 {
 a {
   text-decoration: none;
   color: inherit;
+ 
 }
 
 a:hover {
   text-decoration: none;
-
+  color: #E9EA7C;
+  font-size:larger;
 }
 
 
@@ -153,7 +155,7 @@ form > hr {
 .star,
 .trash-can,
 .pencil {
-  font-size: 0.75rem;
+  font-size: 1rem;
   margin: 0 2px;
   cursor: pointer;
 }
