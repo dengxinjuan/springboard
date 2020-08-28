@@ -103,10 +103,11 @@ class User {
       user: {
         username,
         password,
-        name
+        name,
       }
     });
-
+    
+    console.log(response.data.error);
     // build a new User instance from the API response
     const newUser = new User(response.data.user);
 
@@ -187,7 +188,7 @@ class User {
     return this;
   }
 
-//update User deatails
+//update User deatails not finished yet
 async updateUser(userData){
   const response= await axios.patch(`${BASE_URL}/users/${this.username}`,{params:{user:userData, token:this.loginToken}});
   this.name = response.data.user.name;
